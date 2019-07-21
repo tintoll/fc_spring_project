@@ -1,1 +1,3 @@
-com/study/Main.class
+com/study/cli/Member.class
+com/study/web/SimpleServlet.class
+com/study/cli/Main.class
