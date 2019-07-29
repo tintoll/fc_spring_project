@@ -1,5 +1,7 @@
 package io.tintoll.eatgo.interfaces;
 
+import io.tintoll.eatgo.domain.MenuItemRepository;
+import io.tintoll.eatgo.domain.MenuItemRepositoryImpl;
 import io.tintoll.eatgo.domain.RestaurantRepository;
 import io.tintoll.eatgo.domain.RestaurantRepositoryImpl;
 import org.junit.Test;
@@ -24,7 +26,10 @@ public class RestauranControllerTest {
 
     // RestauranController에서 사용하는 객체의 의존성을 주입해주어야 한다.
     @SpyBean(RestaurantRepositoryImpl.class) // 실제 구현체를 넣어줘야 에러가 나지 않는다.
-    private RestaurantRepository repository;
+    private RestaurantRepository restaurantRepository;
+
+    @SpyBean(MenuItemRepositoryImpl.class)
+    private MenuItemRepository menuItemRepository;
 
     @Test
     public void list() throws Exception {
@@ -47,6 +52,9 @@ public class RestauranControllerTest {
                 ))
                 .andExpect(content().string(
                         containsString("\"name\":\"Bob zip\"")
+                ))
+                .andExpect(content().string(
+                        containsString("Kimchi")
                 ));
 
         mvc.perform(get("/restaurants/2020"))
