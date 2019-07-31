@@ -1,24 +1,28 @@
 package io.tintoll.eatgo.interfaces;
 
 import io.tintoll.eatgo.application.RestaurantService;
-import io.tintoll.eatgo.domain.*;
+import io.tintoll.eatgo.domain.MenuItem;
+import io.tintoll.eatgo.domain.Restaurant;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class) // 스프링을 이용해서 테스트를 진행한다.
 @WebMvcTest(RestauranController.class) // RestauranController를 테스트한다고 명시한다.
@@ -87,5 +91,20 @@ public class RestauranControllerTest {
                 .andExpect(content().string(
                         containsString("\"name\":\"Cyber food\"")
                 ));
+    }
+
+
+    @Test
+    public void create() throws Exception {
+
+        mvc.perform(post("/restaurants")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"name\":\"BeRyong\",\"address\":\"Busan\"}")) // json 형식으로 같을 넣어줌.
+                .andExpect(status().isCreated()) // 201을 리턴하도록
+                .andExpect(header().string("location","/restaurants/1234")) // 헤더 정보에 location 확인
+                .andExpect(content().string("{}"));
+
+        // url을 호출한다음 아래 작업이 진행되게 하기 위해서 verify()를 이용한다.
+        verify(restaurantService).addRestaurants(any()); // 어떤객체라도 들어오면 실행 했다는 것을 확인하기 위해 any()를 사용
     }
 }
