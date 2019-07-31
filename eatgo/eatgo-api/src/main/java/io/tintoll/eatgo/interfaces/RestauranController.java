@@ -10,6 +10,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+// CROS문제 해결하는 어노테이션
+@CrossOrigin
 @RestController
 public class RestauranController {
 
