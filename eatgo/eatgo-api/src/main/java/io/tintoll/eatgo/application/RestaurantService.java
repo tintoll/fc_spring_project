@@ -34,8 +34,8 @@ public class RestaurantService {
         return restaurant;
     }
 
-    public void addRestaurants(Restaurant restaurant) {
-
+    public Restaurant addRestaurants(Restaurant restaurant) {
+        return restaurantRepository.save(restaurant);
     }
 
 }

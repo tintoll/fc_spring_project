@@ -28,4 +28,11 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
                 .orElse(null); // 없으면 null을 리턴
                 // .get();
     }
+
+    @Override
+    public Restaurant save(Restaurant restaurant) {
+        restaurant.setId(1234L);
+        restaurants.add(restaurant);
+        return restaurant;
+    }
 }
