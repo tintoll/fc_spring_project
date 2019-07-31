@@ -1,13 +1,23 @@
 package io.tintoll.eatgo.domain;
 
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Restaurant {
+    @Id
+    @GeneratedValue
     private Long id;
     private String name;
     private String address;
+
+    // 임시로 만든것이기때문에 DB에 저장하지 않는다고 설정
+    @Transient
     private List<MenuItem> menuItems = new ArrayList<>();
 
     public Restaurant() {
