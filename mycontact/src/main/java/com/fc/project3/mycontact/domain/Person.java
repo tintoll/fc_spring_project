@@ -1,41 +1,45 @@
 package com.fc.project3.mycontact.domain;
 
+import lombok.*;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.time.LocalDate;
 
 @Entity
+@Getter
+@Setter
+@ToString
+// @ToString(exclude = "phoneNumber") // phoneNumber를 제외한고 toString을 만들어준다.
+@NoArgsConstructor
+@AllArgsConstructor
+@RequiredArgsConstructor
+@EqualsAndHashCode
 public class Person {
     @Id
     @GeneratedValue
     private Long id;
 
+    @NonNull
     private String name;
+
+    @NonNull
     private int age;
 
-    public Long getId() {
-        return id;
-    }
+    private String hobby;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private String bloodType;
 
-    public String getName() {
-        return name;
-    }
+    private LocalDate birthDay;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String address;
 
-    public int getAge() {
-        return age;
-    }
+    private String job;
 
-    public void setAge(int age) {
-        this.age = age;
-    }
+    // phoneNumber를 제외한고 toString을 만들어준다.
+    @ToString.Exclude
+    private String phoneNumber;
 
 
 }
