@@ -3,8 +3,10 @@ package com.tintoll.admin.repository;
 import com.tintoll.admin.AdminApplicationTests;
 import com.tintoll.admin.model.entity.User;
 import lombok.val;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -39,6 +41,7 @@ public class UserRepositoryTest extends AdminApplicationTests {
     }
 
     @Test
+    @Transactional
     public void update() {
 
         Optional<User> user = userRepository.findById(2L);
@@ -53,8 +56,21 @@ public class UserRepositoryTest extends AdminApplicationTests {
 
     }
 
+    @Test
+    @Transactional
     public void delete() {
 
+        Optional<User> user = userRepository.findById(2L);
+
+        Assert.assertTrue(user.isPresent());
+
+        user.ifPresent( selectUser -> {
+            userRepository.delete(selectUser);
+        });
+
+        Optional<User> deleteUser = userRepository.findById(2L);
+
+        Assert.assertFalse(deleteUser.isPresent());
     }
 
 }
