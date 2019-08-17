@@ -9,8 +9,4 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class AdminApplicationTests {
 
-    @Test
-    public void contextLoads() {
-    }
-
 }
