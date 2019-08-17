@@ -2,10 +2,12 @@ package com.tintoll.admin.repository;
 
 import com.tintoll.admin.AdminApplicationTests;
 import com.tintoll.admin.model.entity.User;
+import lombok.val;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -27,11 +29,27 @@ public class UserRepositoryTest extends AdminApplicationTests {
         System.out.println("newUser :"+newUser );
     }
 
+    @Test
     public void read() {
-
+        Optional<User> user = userRepository.findById(2L);
+        // 값이 있으면
+        user.ifPresent( selectUser -> {
+            System.out.println("selctUser "+selectUser);
+        });
     }
 
+    @Test
     public void update() {
+
+        Optional<User> user = userRepository.findById(2L);
+        // 값이 있으면
+        user.ifPresent( selectUser -> {
+            selectUser.setAccount("Modify");
+            selectUser.setUpdatedAt(LocalDateTime.now());
+            selectUser.setUpdatedBy("Modify");
+
+            userRepository.save(selectUser);
+        });
 
     }
 
