@@ -1,6 +1,7 @@
 package com.tintoll.admin.repository;
 
 import com.tintoll.admin.AdminApplicationTests;
+import com.tintoll.admin.model.entity.Item;
 import com.tintoll.admin.model.entity.User;
 import lombok.val;
 import org.junit.Assert;
@@ -32,11 +33,16 @@ public class UserRepositoryTest extends AdminApplicationTests {
     }
 
     @Test
+    @Transactional
     public void read() {
         Optional<User> user = userRepository.findById(2L);
         // 값이 있으면
         user.ifPresent( selectUser -> {
-            System.out.println("selctUser "+selectUser);
+
+            selectUser.getOrderDetailList().stream().forEach(detail -> {
+                Item item = detail.getItem();
+                System.out.println(item);
+            });
         });
     }
 
