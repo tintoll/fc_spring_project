@@ -42,4 +42,14 @@ public class RestauranController {
         // ResponseEntity 를 이용하여 status()를 201로 보내준다.
         return ResponseEntity.created(location).body("{}");
     }
+
+    @PatchMapping("/restaurants/{id}")
+    public String update(@PathVariable("id") Long id, @RequestBody Restaurant resource) {
+
+        String name = resource.getName();
+        String address = resource.getAddress();
+        restaurantService.updateRestaurant(id, name, address);
+
+        return "{}";
+    }
 }

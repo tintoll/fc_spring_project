@@ -20,8 +20,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class) // 스프링을 이용해서 테스트를 진행한다.
@@ -107,4 +106,16 @@ public class RestauranControllerTest {
         // url을 호출한다음 아래 작업이 진행되게 하기 위해서 verify()를 이용한다.
         verify(restaurantService).addRestaurants(any()); // 어떤객체라도 들어오면 실행 했다는 것을 확인하기 위해 any()를 사용
     }
+
+    @Test
+    public void update() throws Exception {
+        mvc.perform(patch("/restaurants/1004")
+                    .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"Updated Name\",\"address\":\"Updated Address\"}"))
+                .andExpect(status().isOk());
+
+
+        verify(restaurantService).updateRestaurant(1004L, "Updated Name", "Updated Address");
+    }
+
 }
