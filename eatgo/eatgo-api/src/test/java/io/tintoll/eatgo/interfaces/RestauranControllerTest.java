@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
@@ -47,7 +48,11 @@ public class RestauranControllerTest {
         // 컨트롤러는 서비스가 어떻게 동작하는지 관심이 없고 활용하는 부분에 의의를 둠.
         // 가짜 데이터를 넣어서 확인을 하여준다.
         List<Restaurant> restaurants = new ArrayList<>();
-        restaurants.add(new Restaurant(1004L, "Bob zip", "Seoul"));
+        restaurants.add(Restaurant.builder()
+                .id(1004L)
+                .name("Bob zip")
+                .address("Seoul")
+                .build());
         given(restaurantService.getRestaurants()).willReturn(restaurants);
 
         mvc.perform(get("/restaurants"))
@@ -62,9 +67,19 @@ public class RestauranControllerTest {
 
     @Test
     public void detail() throws Exception {
-        Restaurant restaurant1 = new Restaurant(1004L, "Bob zip", "Seoul");
-        restaurant1.addMenuItem(new MenuItem("Kimchi"));
-        Restaurant restaurant2 = new Restaurant(2020L, "Cyber food", "Seoul");
+        Restaurant restaurant1 = Restaurant.builder()
+                .id(1004L)
+                .name("Bob zip")
+                .address("Seoul")
+                .build();
+        restaurant1.setMenuItems(Arrays.asList(MenuItem.builder()
+                .name("Kimchi")
+                .build()));
+        Restaurant restaurant2 = Restaurant.builder()
+                .id(2020L)
+                .name("Cyber food")
+                .address("Seoul")
+                .build();
 
         given(restaurantService.getRestaurantById(1004L)).willReturn(restaurant1);
         given(restaurantService.getRestaurantById(2020L)).willReturn(restaurant2);
@@ -97,8 +112,8 @@ public class RestauranControllerTest {
     public void create() throws Exception {
 
         mvc.perform(post("/restaurants")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content("{\"name\":\"BeRyong\",\"address\":\"Busan\"}")) // json 형식으로 같을 넣어줌.
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"BeRyong\",\"address\":\"Busan\"}")) // json 형식으로 같을 넣어줌.
                 .andExpect(status().isCreated()) // 201을 리턴하도록
                 // .andExpect(header().string("location","/restaurants/1234")) // 헤더 정보에 location 확인
                 .andExpect(content().string("{}"));
@@ -110,7 +125,7 @@ public class RestauranControllerTest {
     @Test
     public void update() throws Exception {
         mvc.perform(patch("/restaurants/1004")
-                    .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"Updated Name\",\"address\":\"Updated Address\"}"))
                 .andExpect(status().isOk());
 

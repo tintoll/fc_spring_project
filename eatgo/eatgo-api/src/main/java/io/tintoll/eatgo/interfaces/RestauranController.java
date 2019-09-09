@@ -20,7 +20,7 @@ public class RestauranController {
 
     @GetMapping("/restaurants")
     public List<Restaurant> list() {
-     return restaurantService.getRestaurants();
+        return restaurantService.getRestaurants();
     }
 
     @GetMapping("/restaurants/{id}")
@@ -32,13 +32,13 @@ public class RestauranController {
     @PostMapping("/restaurants")
     public ResponseEntity<?> create(@RequestBody Restaurant resource) throws URISyntaxException {
 
-        String name = resource.getName();
-        String address = resource.getAddress();
-
-        Restaurant restaurant = new Restaurant( name, address);
+        Restaurant restaurant = Restaurant.builder()
+                .name(resource.getName())
+                .address(resource.getAddress())
+                .build();
         restaurantService.addRestaurants(restaurant);
 
-        URI location = new URI("/restaurants/"+restaurant.getId());
+        URI location = new URI("/restaurants/" + restaurant.getId());
         // ResponseEntity 를 이용하여 status()를 201로 보내준다.
         return ResponseEntity.created(location).body("{}");
     }
