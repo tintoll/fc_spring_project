@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +22,11 @@ public class Restaurant {
     @GeneratedValue
     @Setter
     private Long id;
+
+    @NotEmpty
     private String name;
+
+    @Size(min = 2)
     private String address;
 
     @Transient
