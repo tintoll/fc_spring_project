@@ -14,7 +14,7 @@ import java.util.List;
 // CROS문제 해결하는 어노테이션
 @CrossOrigin
 @RestController
-public class RestauranController {
+public class RestaurantController {
 
     @Autowired
     private RestaurantService restaurantService;

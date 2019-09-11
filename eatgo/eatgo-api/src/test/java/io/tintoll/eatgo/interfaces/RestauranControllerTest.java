@@ -3,9 +3,9 @@ package io.tintoll.eatgo.interfaces;
 import io.tintoll.eatgo.application.RestaurantService;
 import io.tintoll.eatgo.domain.MenuItem;
 import io.tintoll.eatgo.domain.Restaurant;
+import io.tintoll.eatgo.domain.RestaurantNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class) // 스프링을 이용해서 테스트를 진행한다.
-@WebMvcTest(RestauranController.class) // RestauranController를 테스트한다고 명시한다.
+@WebMvcTest(RestaurantController.class) // RestauranController를 테스트한다고 명시한다.
 public class RestauranControllerTest {
 
     @Autowired
@@ -66,7 +66,7 @@ public class RestauranControllerTest {
     }
 
     @Test
-    public void detail() throws Exception {
+    public void detailExisted() throws Exception {
         Restaurant restaurant1 = Restaurant.builder()
                 .id(1004L)
                 .name("Bob zip")
@@ -105,6 +105,21 @@ public class RestauranControllerTest {
                 .andExpect(content().string(
                         containsString("\"name\":\"Cyber food\"")
                 ));
+    }
+
+    @Test
+    public void detailNotExisted() throws Exception {
+
+        /*
+            /restaurants/404  API 로직안에서 restaurantService.getRestaurantById(404L) 를 호출하였을때
+            어떠한 결과가 나오는지 정의를 해줘야한다.
+         */
+        given(restaurantService.getRestaurantById(404L)).willThrow(new RestaurantNotFoundException(404L));
+
+        mvc.perform(get("/restaurants/404"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("{}"));
+
     }
 
 

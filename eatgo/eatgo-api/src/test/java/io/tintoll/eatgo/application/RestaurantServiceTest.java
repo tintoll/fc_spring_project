@@ -76,6 +76,11 @@ public class RestaurantServiceTest {
         assertThat(menuItem.getName(), is("Kimchi"));
     }
 
+    @Test(expected = RestaurantNotFoundException.class)
+    public void getRestaurantWithoutId() {
+        Restaurant restaurant = restaurantService.getRestaurantById(404L);
+    }
+
     @Test
     public void addRestaurant() {
         /*
