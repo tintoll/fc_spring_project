@@ -34,28 +34,16 @@ public class MenuItemServiceTest {
 
     @Test
     public void bulkUpdate() {
-        // bulkUpdate가 테스트가 해야할거?
-        // menuRepository.save(menuItem); // 추가
 
-        // given
-        // 보내줄 데이터 샘플 만들기
         List<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(MenuItem.builder().name("KimChi").build());
-        menuItems.add(MenuItem.builder().name("Bobzip").build());
+        menuItems.add(MenuItem.builder().id(2L).name("Bob  zip").build());
+        menuItems.add(MenuItem.builder().id(1004L).destroy(true).build());
 
-
-        // given
-        // menuItemRepository를 사용하는 행위를 해줘야할듯
-//        given(menuItemRepository.save(any()));
-//        given(menuItemRepository.save(any()));
-
-        // when
-        // 실제 서비스 하는행위
         menuItemService.bulkUpdate(1L, menuItems);
 
-        // then
-        // 서비스를 하고난 다음 확인할 사항?
         verify(menuItemRepository, times(2)).save(any());
+        verify(menuItemRepository, times(1)).deleteById(1004L);
 
     }
 }
