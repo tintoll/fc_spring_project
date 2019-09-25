@@ -9,6 +9,7 @@ import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
 public class ReviewServiceTests {
@@ -34,7 +35,7 @@ public class ReviewServiceTests {
                 .description("good")
                 .build();
 
-        reviewService.addReview(review);
+        reviewService.addReview(eq(1L),review);
 
         verify(reviewRepository).save(any());
     }

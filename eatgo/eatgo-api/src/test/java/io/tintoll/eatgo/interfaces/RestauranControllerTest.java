@@ -4,6 +4,7 @@ import io.tintoll.eatgo.application.RestaurantService;
 import io.tintoll.eatgo.domain.MenuItem;
 import io.tintoll.eatgo.domain.Restaurant;
 import io.tintoll.eatgo.domain.RestaurantNotFoundException;
+import io.tintoll.eatgo.domain.Review;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,15 +76,13 @@ public class RestauranControllerTest {
         restaurant1.setMenuItems(Arrays.asList(MenuItem.builder()
                 .name("Kimchi")
                 .build()));
-        Restaurant restaurant2 = Restaurant.builder()
-                .id(2020L)
-                .name("Cyber food")
-                .address("Seoul")
-                .build();
+        restaurant1.setReviews(Arrays.asList(Review.builder()
+                .name("JOCKER")
+                .score(1)
+                .description("bad!")
+                .build()));
 
         given(restaurantService.getRestaurantById(1004L)).willReturn(restaurant1);
-        given(restaurantService.getRestaurantById(2020L)).willReturn(restaurant2);
-
 
         mvc.perform(get("/restaurants/1004"))
                 .andExpect(status().isOk())
@@ -95,16 +94,11 @@ public class RestauranControllerTest {
                 ))
                 .andExpect(content().string(
                         containsString("Kimchi")
-                ));
-
-        mvc.perform(get("/restaurants/2020"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(
-                        containsString("\"id\":2020")
                 ))
                 .andExpect(content().string(
-                        containsString("\"name\":\"Cyber food\"")
+                        containsString("bad!")
                 ));
+        
     }
 
     @Test

@@ -1,9 +1,6 @@
 package io.tintoll.eatgo.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,6 +19,9 @@ public class Review {
     @GeneratedValue
     private Long id;
 
+    @Setter
+    private Long restaurantId;
+
     @NotEmpty
     private String name;
 
@@ -30,4 +30,5 @@ public class Review {
 
     @NotEmpty
     private String description;
+
 }
