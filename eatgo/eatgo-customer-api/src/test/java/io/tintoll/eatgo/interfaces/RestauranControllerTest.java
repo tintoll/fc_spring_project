@@ -117,46 +117,4 @@ public class RestauranControllerTest {
 
     }
 
-
-    @Test
-    public void createWithValidData() throws Exception {
-
-        mvc.perform(post("/restaurants")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"BeRyong\",\"address\":\"Busan\"}")) // json 형식으로 같을 넣어줌.
-                .andExpect(status().isCreated()) // 201을 리턴하도록
-                // .andExpect(header().string("location","/restaurants/1234")) // 헤더 정보에 location 확인
-                .andExpect(content().string("{}"));
-
-        // url을 호출한다음 아래 작업이 진행되게 하기 위해서 verify()를 이용한다.
-        verify(restaurantService).addRestaurants(any()); // 어떤객체라도 들어오면 실행 했다는 것을 확인하기 위해 any()를 사용
-    }
-
-    @Test
-    public void createWithInValidData() throws Exception {
-        mvc.perform(post("/restaurants")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"\",\"address\":\"B\"}"))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    public void updateWithValidData() throws Exception {
-        mvc.perform(patch("/restaurants/1004")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"Updated Name\",\"address\":\"Updated Address\"}"))
-                .andExpect(status().isOk());
-
-
-        verify(restaurantService).updateRestaurant(1004L, "Updated Name", "Updated Address");
-    }
-
-    @Test
-    public void updateWithInValidData() throws Exception {
-        mvc.perform(patch("/restaurants/1004")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"\",\"address\":\"U\"}"))
-                .andExpect(status().isBadRequest());
-    }
-
 }

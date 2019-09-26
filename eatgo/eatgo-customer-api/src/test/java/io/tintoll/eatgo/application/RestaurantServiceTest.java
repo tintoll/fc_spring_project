@@ -105,42 +105,4 @@ public class RestaurantServiceTest {
         Restaurant restaurant = restaurantService.getRestaurantById(404L);
     }
 
-    @Test
-    public void addRestaurant() {
-        /*
-            restaurantRepository.save(any()) 라는 행위가 일어났을때
-            will 에 대한 부분이 넘어오는데 그 값을 변경하여 리턴해준다.
-        */
-        given(restaurantRepository.save(any())).will(invocation -> {
-            Restaurant restaurant = invocation.getArgument(0);
-            restaurant.setId(1234L);
-            return restaurant;
-        });
-
-        Restaurant restaurant = Restaurant.builder()
-                .name("BeRyong")
-                .address("Busan")
-                .build();
-        
-        Restaurant created = restaurantService.addRestaurants(restaurant);
-        assertThat(created.getId(), is(1234L));
-    }
-
-
-    @Test
-    public void updateRestaurant() {
-        Restaurant restaurant = Restaurant.builder()
-                .id(1004L)
-                .name("BeRyong")
-                .address("Busan")
-                .build();
-
-        given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant));
-
-        // 실제로 restaurant가 변경되서 나와야된다.
-        restaurantService.updateRestaurant(1004L, "Updated Name", "Updated Address");
-
-        assertThat(restaurant.getName(), is("Updated Name"));
-    }
-
 }
