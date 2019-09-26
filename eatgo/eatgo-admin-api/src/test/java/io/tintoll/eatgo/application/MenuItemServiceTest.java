@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -30,6 +31,19 @@ public class MenuItemServiceTest {
 
         // 레파지토리는 Mock해주고 Service는 객체를 생성해준다. 왜?
         menuItemService = new MenuItemService(menuItemRepository);
+    }
+
+    @Test
+    public void getMenuItems() {
+        List<MenuItem> mockMenuItems = new ArrayList<>();
+        mockMenuItems.add(MenuItem.builder().name("kimchi").build());
+
+        given(menuItemRepository.findAllByRestaurantId(1L)).willReturn(mockMenuItems);
+
+        List<MenuItem> menuItems = menuItemService.getMenuItems(1L);
+        MenuItem menuItem = menuItems.get(0);
+
+        assertThat(menuItem.getName(), is("kimchi"));
     }
 
     @Test

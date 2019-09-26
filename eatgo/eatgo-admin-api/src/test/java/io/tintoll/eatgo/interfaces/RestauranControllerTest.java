@@ -73,14 +73,6 @@ public class RestauranControllerTest {
                 .name("Bob zip")
                 .address("Seoul")
                 .build();
-        restaurant1.setMenuItems(Arrays.asList(MenuItem.builder()
-                .name("Kimchi")
-                .build()));
-        restaurant1.setReviews(Arrays.asList(Review.builder()
-                .name("JOCKER")
-                .score(1)
-                .description("bad!")
-                .build()));
 
         given(restaurantService.getRestaurantById(1004L)).willReturn(restaurant1);
 
@@ -91,12 +83,6 @@ public class RestauranControllerTest {
                 ))
                 .andExpect(content().string(
                         containsString("\"name\":\"Bob zip\"")
-                ))
-                .andExpect(content().string(
-                        containsString("Kimchi")
-                ))
-                .andExpect(content().string(
-                        containsString("bad!")
                 ));
         
     }

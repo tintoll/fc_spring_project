@@ -14,8 +14,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.Mockito.verify;
@@ -39,6 +41,19 @@ public class MenuItemControllerTest {
            .andExpect(status().isOk());
 
         verify(menuItemService).bulkUpdate(eq(1L), any());
+    }
+
+    @Test
+    public void list() throws Exception {
+        List<MenuItem> menuItems = new ArrayList<>();
+        menuItems.add(MenuItem.builder().name("kimchi").build());
+
+        given(menuItemService.getMenuItems(1L)).willReturn(menuItems);
+
+        mvc.perform(get("/restaurants/1/menuItems"))
+                .andExpect(status().isOk())
+                // 여러 리스트에 있는 데이터중 하나를 확인하기 위해서 org.hamcrest.Matchers.containsString 사용
+                .andExpect(content().string(containsString("kimchi")));
     }
 
 }
