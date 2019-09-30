@@ -2,7 +2,6 @@ package io.tintoll.eatgo.application;
 
 import io.tintoll.eatgo.domain.Region;
 import io.tintoll.eatgo.domain.RegionRepository;
-import io.tintoll.eatgo.domain.RestaurantRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -45,13 +44,5 @@ public class RegionServiceTests {
 
     }
 
-    @Test
-    public void addRegion() {
-        Region region = regionService.addRegion("Seoul");
-
-        verify(regionRepository).save(any());
-
-        assertThat(region.getName(), is("Seoul"));
-    }
 
 }
