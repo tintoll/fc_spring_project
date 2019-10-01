@@ -3,12 +3,8 @@ package io.tintoll.eatgo.interfaces;
 import io.tintoll.eatgo.application.RestaurantService;
 import io.tintoll.eatgo.domain.Restaurant;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 // CROS문제 해결하는 어노테이션
@@ -20,8 +16,8 @@ public class RestaurantController {
     private RestaurantService restaurantService;
 
     @GetMapping("/restaurants")
-    public List<Restaurant> list() {
-        return restaurantService.getRestaurants();
+    public List<Restaurant> list(@RequestParam("region") String region) {
+        return restaurantService.getRestaurants(region);
     }
 
     @GetMapping("/restaurants/{id}")

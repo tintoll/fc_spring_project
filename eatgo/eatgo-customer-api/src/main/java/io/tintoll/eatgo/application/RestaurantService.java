@@ -3,7 +3,6 @@ package io.tintoll.eatgo.application;
 import io.tintoll.eatgo.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,8 +24,8 @@ public class RestaurantService {
         this.reviewRepository = reviewRepository;
     }
 
-    public List<Restaurant> getRestaurants() {
-        return restaurantRepository.findAll();
+    public List<Restaurant> getRestaurants(String region) {
+        return restaurantRepository.findAllByAddressContaining(region);
     }
 
     public Restaurant getRestaurantById(Long id) {
