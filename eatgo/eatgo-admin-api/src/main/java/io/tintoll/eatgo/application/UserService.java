@@ -21,4 +21,8 @@ public class UserService {
         List<User> users = userRepository.findAll();
         return users;
     }
+
+    public User addUser(String email, String name) {
+        return userRepository.save(User.builder().email(email).name(name).build());
+    }
 }

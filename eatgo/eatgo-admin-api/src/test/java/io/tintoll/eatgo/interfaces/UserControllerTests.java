@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -15,7 +16,9 @@ import java.util.List;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,6 +48,25 @@ public class UserControllerTests {
                 .andExpect(content().string(containsString("테스터")));
 
 
+    }
+
+
+    @Test
+    public void create() throws Exception {
+
+        String email = "admin@exam.com";
+        String name = "Administrator";
+
+        User mockUser = User.builder().email(email).name(name).build();
+
+        given(userService.addUser(email,name)).willReturn(mockUser);
+
+        mvc.perform(post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"admin@exam.com\",\"name\":\"Administrator\"}"))
+           .andExpect(status().isCreated());
+
+        verify(userService).addUser(email, name);
     }
 
 }
