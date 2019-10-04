@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.core.StringContains.containsString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -67,6 +67,22 @@ public class UserControllerTests {
            .andExpect(status().isCreated());
 
         verify(userService).addUser(email, name);
+    }
+
+    @Test
+    public void updateUser() throws Exception {
+
+        mvc.perform(patch("/users/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"admin@exam.com\",\"name\":\"Administrator\",\"level\":100}"))
+                .andExpect(status().isOk());
+
+        Long id = 1L;
+        String email = "admin@exam.com";
+        String name = "Administrator";
+        Long level = 100L;
+
+        verify(userService).updateUser(eq(id), eq(email), eq(name), eq(level));
     }
 
 }
