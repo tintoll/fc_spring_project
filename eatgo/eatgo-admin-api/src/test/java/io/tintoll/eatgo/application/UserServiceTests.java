@@ -84,4 +84,21 @@ public class UserServiceTests {
         assertThat(user.getName(),is("SuperMan"));
 
     }
+
+    @Test
+    public void deactiveUser() {
+
+        Long id = 1L;
+        String email = "admin@exam.com";
+
+        User mockUser = User.builder().id(id).email(email).name("Administrator").level(1L).build();
+        given(userRepository.findById(id)).willReturn(Optional.of(mockUser));
+
+        User user = userService.deactivateUser(1L);
+
+        verify(userRepository).findById(1L);
+
+        assertThat(user.isAdmin(), is(false));
+        assertThat(user.isActivate(), is(false));
+    }
 }

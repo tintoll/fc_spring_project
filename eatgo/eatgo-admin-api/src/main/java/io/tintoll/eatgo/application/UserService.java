@@ -38,4 +38,11 @@ public class UserService {
 
         return user;
     }
+
+    public User deactivateUser(Long id) {
+        // TODO: restaurantService의 예외 처리 참고.
+        User user = userRepository.findById(id).orElse(null);
+        user.deactivate();
+        return user;
+    }
 }
