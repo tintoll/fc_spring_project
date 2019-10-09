@@ -7,8 +7,12 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Optional;
+
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 public class UserServiceTests {
@@ -34,5 +38,19 @@ public class UserServiceTests {
         User user = userService.registerUser(email, name, password);
 
         verify(userRepository).save(any());
+    }
+
+    @Test(expected = EmailExistedException.class)
+    public void registerUserWithExistedEmail() {
+        String email = "tester@exam.com";
+        String name = "Tester";
+        String password = "test";
+
+        User user = User.builder().build();
+        given(userRepository.findByEmail(email)).willReturn(Optional.of(user));
+
+        userService.registerUser(email, name, password);
+        // 호출되면 안된다.
+        verify(userRepository, never()).save(any());
     }
 }
