@@ -42,4 +42,9 @@ public class UserService {
 
         return user;
     }
+
+    public User autheticate(String email, String password) {
+        // TODO. 구현
+        return null;
+    }
 }
