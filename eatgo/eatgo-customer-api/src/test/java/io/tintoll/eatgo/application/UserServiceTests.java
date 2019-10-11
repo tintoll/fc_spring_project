@@ -70,6 +70,8 @@ public class UserServiceTests {
         User mockUser = User.builder().email(email).password(password).build();
         given(userRepository.findByEmail(email)).willReturn(Optional.of(mockUser));
 
+        given(passwordEncoder.matches(any(), any())).willReturn(true);
+
         User user = userService.autheticate(email,password);
 
         assertThat(user.getEmail(), is(email));
@@ -94,7 +96,9 @@ public class UserServiceTests {
         User mockUser = User.builder().email(email).password(password).build();
         given(userRepository.findByEmail(email)).willReturn(Optional.of(mockUser));
 
-        User user = userService.autheticate(email,password);
+        given(passwordEncoder.matches(any(), any())).willReturn(false);
+
+        userService.autheticate(email,password);
 
     }
 }
