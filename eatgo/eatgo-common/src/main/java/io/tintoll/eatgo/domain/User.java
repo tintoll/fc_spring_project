@@ -1,5 +1,6 @@
 package io.tintoll.eatgo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -43,5 +44,13 @@ public class User {
 
     public void deactivate() {
         this.level = 0L;
+    }
+
+    @JsonIgnore
+    public String getAccessToken() {
+        if(this.password == null) {
+            return "";
+        }
+        return this.password.substring(0,10);
     }
 }

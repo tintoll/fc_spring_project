@@ -1,6 +1,7 @@
 package io.tintoll.eatgo.interfaces;
 
 import io.tintoll.eatgo.application.UserService;
+import io.tintoll.eatgo.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,14 +19,14 @@ public class SessionController {
 
     @PostMapping("/session")
     public ResponseEntity<?> create(@RequestBody SessionRequestDto resource) throws URISyntaxException {
-        String accessToken = "ACCESSTOKEN";
+
         String email = resource.getEmail();
         String password = resource.getPassword();
-        userService.autheticate(email, password);
+        User user = userService.autheticate(email, password);
 
-        String url = "/session";
+        String accessToken = user.getAccessToken();
 
-        return ResponseEntity.created(new URI(url)).body(
+        return ResponseEntity.created(new URI("/session")).body(
                 SessionResponseDto.builder().accessToken(accessToken).build());
     }
 }

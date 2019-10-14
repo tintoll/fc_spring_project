@@ -3,6 +3,7 @@ package io.tintoll.eatgo.interfaces;
 import io.tintoll.eatgo.application.EmailNotExistedException;
 import io.tintoll.eatgo.application.PasswordWrongException;
 import io.tintoll.eatgo.application.UserService;
+import io.tintoll.eatgo.domain.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +32,21 @@ public class SessionControllerTests {
 
     @Test
     public void create() throws Exception {
+        String email = "tester@exam.com";
+        String password = "test";
+
+        User mockUser = User.builder().password("ACCESSTOKE").build();
+        given(userService.autheticate(email, password)).willReturn(mockUser);
+
         mvc.perform(post("/session")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content("{\"email\":\"tester@exam.com\",\"password\":\"test\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location","/session"))
-                .andExpect(content().string("{\"accessToken\":\"ACCESSTOKEN\"}"));
+                .andExpect(content().string("{\"accessToken\":\"ACCESSTOKE\"}"));
 
-        verify(userService).autheticate(eq("tester@exam.com"), eq("test"));
+
+        verify(userService).autheticate(eq(email), eq(password));
     }
 
     @Test
