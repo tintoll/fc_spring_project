@@ -4,6 +4,7 @@ import io.tintoll.eatgo.application.EmailNotExistedException;
 import io.tintoll.eatgo.application.PasswordWrongException;
 import io.tintoll.eatgo.application.UserService;
 import io.tintoll.eatgo.domain.User;
+import io.tintoll.eatgo.utils.JwtUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class SessionControllerTests {
     private MockMvc mvc;
 
     @MockBean
+    private JwtUtil jwtUtil;
+
+    @MockBean
     private UserService userService;
 
     @Test
@@ -35,15 +39,17 @@ public class SessionControllerTests {
         String email = "tester@exam.com";
         String password = "test";
 
-        User mockUser = User.builder().password("ACCESSTOKE").build();
+        User mockUser = User.builder().id(1004L).name("Tester").build();
         given(userService.autheticate(email, password)).willReturn(mockUser);
+
+        given(jwtUtil.createToken(1004L,"Tester")).willReturn("header.payload.signature");
 
         mvc.perform(post("/session")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content("{\"email\":\"tester@exam.com\",\"password\":\"test\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location","/session"))
-                .andExpect(content().string("{\"accessToken\":\"ACCESSTOKE\"}"));
+                .andExpect(content().string("{\"accessToken\":\"header.payload.signature\"}"));
 
 
         verify(userService).autheticate(eq(email), eq(password));
