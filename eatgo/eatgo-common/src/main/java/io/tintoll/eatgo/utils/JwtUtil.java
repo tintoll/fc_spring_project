@@ -1,5 +1,6 @@
 package io.tintoll.eatgo.utils;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,5 +22,12 @@ public class JwtUtil {
                                 .claim("userId", userId)
                                 .claim("name",name);
         return builder.signWith(key, SignatureAlgorithm.HS256).compact();
+    }
+
+    public Claims getClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(key)
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
