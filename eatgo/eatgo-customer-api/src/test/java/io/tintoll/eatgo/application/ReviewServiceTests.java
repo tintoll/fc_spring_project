@@ -28,13 +28,8 @@ public class ReviewServiceTests {
 
     @Test
     public void addReview() {
-        Review review = Review.builder()
-                .name("JOCKER")
-                .score(3)
-                .description("good")
-                .build();
 
-        reviewService.addReview(eq(1L),review);
+        reviewService.addReview(eq(1L),"JOCKER",3,"good");
 
         verify(reviewRepository).save(any());
     }
