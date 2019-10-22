@@ -32,7 +32,7 @@ public class ReviewControllerTests {
     @Test
     public void createWithValid() throws Exception {
         // 이 부분을 넣어줘야 실제 로직에서 사용되는 값을 사용할수 있음.
-        given(reviewService.addReview(eq(1L),eq("Jocker"), eq(3), eq("goods")))
+        given(reviewService.addReview(any(), any(), any(), any()))
                 .willReturn(Review.builder().id(1004L).build());
 
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5hbWUiOiJKb2tlciJ9.0A1ndCB8wljqkgfHdTywu6ykulanEUq8txjlpglfvBQ";
@@ -43,7 +43,7 @@ public class ReviewControllerTests {
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location","/restaurants/1/reviews/1004"));
 
-        verify(reviewService).addReview(eq(1L),eq("Jocker"), eq(3), eq("goods"));
+        verify(reviewService).addReview(any(), any(), any(), any());
     }
 
     @Test

@@ -7,8 +7,10 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 public class ReviewServiceTests {
@@ -29,7 +31,12 @@ public class ReviewServiceTests {
     @Test
     public void addReview() {
 
-        reviewService.addReview(eq(1L),"JOCKER",3,"good");
+        Review mockReview = Review.builder().id(1L).build();
+        given(reviewRepository.save(any())).willReturn(mockReview);
+
+        Review review = reviewService.addReview(1L, "JOCKER", 3, "good");
+
+        assertThat(review.getId(), is(1L));
 
         verify(reviewRepository).save(any());
     }
