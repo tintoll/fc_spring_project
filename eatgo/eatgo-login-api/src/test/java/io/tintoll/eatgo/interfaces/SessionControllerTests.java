@@ -64,7 +64,7 @@ public class SessionControllerTests {
                 .content("{\"email\":\"tester@exam.com\",\"password\":\"x\"}"))
                 .andExpect(status().isBadRequest());
 
-        verify(userService).autheticate(eq("tester@exam.com"), eq("x"));
+        verify(userService).autheticate(eq("tester@exam.com"),eq("x"));
     }
 
     @Test

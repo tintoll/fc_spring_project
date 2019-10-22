@@ -3,7 +3,6 @@ package io.tintoll.eatgo.application;
 import io.tintoll.eatgo.domain.User;
 import io.tintoll.eatgo.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,24 +24,14 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User registerUser(String email, String name, String password) {
+    public User autheticate(String email, String password) {
 
-        Optional<User> existed = userRepository.findByEmail(email);
-        if(existed.isPresent()) {
-            throw new EmailExistedException(email);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new EmailNotExistedException());
+
+        if(!passwordEncoder.matches(password, user.getPassword())) {
+            throw new PasswordWrongException();
         }
-
-        String encodePassword = passwordEncoder.encode(password);
-
-        User user = User.builder()
-                        .email(email)
-                        .name(name)
-                        .password(encodePassword)
-                        .level(1L)
-                        .build();
-        userRepository.save(user);
 
         return user;
     }
-
 }

@@ -60,45 +60,4 @@ public class UserServiceTests {
         // 호출되면 안된다.
         verify(userRepository, never()).save(any());
     }
-
-
-    @Test
-    public void autheticateWithValidAttribute() {
-        String email = "tester@exam.com";
-        String password = "test";
-
-        User mockUser = User.builder().email(email).password(password).build();
-        given(userRepository.findByEmail(email)).willReturn(Optional.of(mockUser));
-
-        given(passwordEncoder.matches(any(), any())).willReturn(true);
-
-        User user = userService.autheticate(email,password);
-
-        assertThat(user.getEmail(), is(email));
-
-    }
-
-    @Test(expected = EmailNotExistedException.class)
-    public void autheticateWithEmailNotExisted() {
-        String email = "x@exam.com";
-        String password = "test";
-
-        given(userRepository.findByEmail(email)).willReturn(Optional.empty());
-
-        userService.autheticate(email,password);
-    }
-
-    @Test(expected = PasswordWrongException.class)
-    public void autheticateWithPassWrongExpcetion () {
-        String email = "tester@exam.com";
-        String password = "x";
-
-        User mockUser = User.builder().email(email).password(password).build();
-        given(userRepository.findByEmail(email)).willReturn(Optional.of(mockUser));
-
-        given(passwordEncoder.matches(any(), any())).willReturn(false);
-
-        userService.autheticate(email,password);
-
-    }
 }
