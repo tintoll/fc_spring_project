@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -35,18 +34,39 @@ public class SessionControllerTests {
     private UserService userService;
 
     @Test
-    public void create() throws Exception {
+    public void createWithPublicUser() throws Exception {
         String email = "tester@exam.com";
         String password = "test";
 
-        User mockUser = User.builder().id(1004L).name("Tester").build();
+        User mockUser = User.builder().id(1004L).level(1L).name("Tester").build();
         given(userService.autheticate(email, password)).willReturn(mockUser);
 
-        given(jwtUtil.createToken(1004L,"Tester")).willReturn("header.payload.signature");
+        given(jwtUtil.createToken(1004L,"Tester", null)).willReturn("header.payload.signature");
 
         mvc.perform(post("/session")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content("{\"email\":\"tester@exam.com\",\"password\":\"test\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("location","/session"))
+                .andExpect(content().string("{\"accessToken\":\"header.payload.signature\"}"));
+
+
+        verify(userService).autheticate(eq(email), eq(password));
+    }
+
+    @Test
+    public void createWithRestaurantOwner() throws Exception {
+        String email = "tester@exam.com";
+        String password = "test";
+
+        User mockUser = User.builder().id(1004L).level(50L).restaurantId(369L).name("Tester").build();
+        given(userService.autheticate(email, password)).willReturn(mockUser);
+
+        given(jwtUtil.createToken(1004L,"Tester", 369L)).willReturn("header.payload.signature");
+
+        mvc.perform(post("/session")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"tester@exam.com\",\"password\":\"test\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location","/session"))
                 .andExpect(content().string("{\"accessToken\":\"header.payload.signature\"}"));

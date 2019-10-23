@@ -21,7 +21,7 @@ public class JwtUtilTests {
 
     @Test
     public void createToken() {
-        String accessToken = jwtUtil.createToken(1004L, "Joker");
+        String accessToken = jwtUtil.createToken(1004L, "Joker", null);
 
         assertThat(accessToken, containsString("."));
     }
