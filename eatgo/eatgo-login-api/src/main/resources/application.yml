@@ -16,12 +16,6 @@ spring:
 spring:
   profiles: mysql
   datasource:
-    driverClassName:com.mariadb.jdbc.Driver
-    url: jdbc:mariadb://${MYSQL_HOST}:3306/${MYSQL_DATABASE}
+    url: jdbc:mysql://${MYSQL_HOST}:3306/${MYSQL_DATABASE}
     username: ${MYSQL_USER}
     password: ${MYSQL_PASSWORD}
-  jpa:
-    database-platform:org.hibernate.dialect.MySQL5Dialect
-    properties:
-      hibernate:   
-        dialect: org.hibernate.dialect.MySQL5Dialect    
