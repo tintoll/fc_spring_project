@@ -1,5 +1,5 @@
-until java -jar libs/*.jar
+until java -jar /home/eatgo/libs/*jar
 do
-  printf "******************************************************************"
-  sleep 5
+	printf "**************"
+	sleep 5
 done

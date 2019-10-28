@@ -16,6 +16,7 @@ spring:
 spring:
   profiles: mysql
   datasource:
+    driverClassName:org.mariadb.jdbc.Driver
     url: jdbc:mysql://${MYSQL_HOST}:3306/${MYSQL_DATABASE}
     username: ${MYSQL_USER}
     password: ${MYSQL_PASSWORD}
