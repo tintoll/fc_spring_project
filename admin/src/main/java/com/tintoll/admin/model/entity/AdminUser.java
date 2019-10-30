@@ -4,15 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
-import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class User {
+public class AdminUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,13 +26,19 @@ public class User {
 
     private String status;
 
-    private String email;
+    private String role;
 
-    private String phoneNumber;
+    private LocalDateTime lastLoginAt;
+
+    private Integer loginFailCount;
+
+    private LocalDateTime passwordUpdatedAt;
 
     private LocalDateTime registeredAt;
 
     private LocalDateTime unregisteredAt;
+
+
 
     private LocalDateTime createdAt;
 
