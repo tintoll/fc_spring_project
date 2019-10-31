@@ -23,13 +23,16 @@ public class UserRepositoryTest extends AdminApplicationTests {
     public void create() {
         User user = new User();
         user.setAccount("TestUser02");
-        user.setEmail("TestUser02@gmail.com");
+        user.setPassword("password");
+        user.setStatus("STATUS");
+
         user.setPhoneNumber("010-1111-1234");
         user.setCreatedAt(LocalDateTime.now());
         user.setCreatedBy("TestUser02");
 
         User newUser = userRepository.save(user);
-        System.out.println("newUser :"+newUser );
+
+        assertNotNull(newUser);
     }
 
     @Test
@@ -38,11 +41,8 @@ public class UserRepositoryTest extends AdminApplicationTests {
         Optional<User> user = userRepository.findById(1L);
         // 값이 있으면
         user.ifPresent( selectUser -> {
-
-            selectUser.getOrderDetailList().stream().forEach(detail -> {
-                Item item = detail.getItem();
-                System.out.println(item);
-            });
+            System.out.println("사용자 account : "+ selectUser.getAccount());
+            System.out.println("사용자 폰넘버 : "+ selectUser.getPhoneNumber());
         });
     }
 
@@ -50,10 +50,10 @@ public class UserRepositoryTest extends AdminApplicationTests {
     @Transactional
     public void update() {
 
-        Optional<User> user = userRepository.findById(2L);
+        Optional<User> user = userRepository.findById(1L);
         // 값이 있으면
         user.ifPresent( selectUser -> {
-            selectUser.setAccount("Modify");
+            selectUser.setPhoneNumber("010-1234-1234");
             selectUser.setUpdatedAt(LocalDateTime.now());
             selectUser.setUpdatedBy("Modify");
 
@@ -66,7 +66,7 @@ public class UserRepositoryTest extends AdminApplicationTests {
     @Transactional
     public void delete() {
 
-        Optional<User> user = userRepository.findById(2L);
+        Optional<User> user = userRepository.findById(1L);
 
         Assert.assertTrue(user.isPresent());
 
