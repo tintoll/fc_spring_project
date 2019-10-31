@@ -3,6 +3,7 @@ package com.tintoll.admin.model.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -40,5 +41,8 @@ public class User {
 
     private String updatedBy;
 
+    @ToString.Exclude
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<OrderGroup> orderGroupList;
 
 }

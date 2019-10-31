@@ -23,7 +23,7 @@ public class ItemRepositoryTest extends AdminApplicationTests {
         item.setPrice(new BigDecimal(100000));
         item.setContent("삼성 노트북 설명");
 
-        item.setPartnerId(1L);
+        // item.setPartnerId(1L);
 
         Item newItem = itemRepository.save(item);
 

@@ -38,11 +38,26 @@ public class UserRepositoryTest extends AdminApplicationTests {
     @Test
     @Transactional
     public void read() {
-        Optional<User> user = userRepository.findById(1L);
+        Optional<User> user = userRepository.findFirstByPhoneNumberOrderByIdDesc("010-1111-1234");
         // 값이 있으면
         user.ifPresent( selectUser -> {
             System.out.println("사용자 account : "+ selectUser.getAccount());
             System.out.println("사용자 폰넘버 : "+ selectUser.getPhoneNumber());
+
+            selectUser.getOrderGroupList().stream().forEach(orderGroup -> {
+                System.out.println("orderGroup : "+ orderGroup.toString());
+
+                orderGroup.getOrderDetailList().stream().forEach(orderDetail -> {
+                    System.out.println("orderDetail : "+orderDetail.toString());
+
+                    System.out.println("item getBrandName : "+orderDetail.getItem().getBrandName());
+                    System.out.println("partner getName : "+orderDetail.getItem().getPartner().getName());
+                    System.out.println("category getTitle : "+orderDetail.getItem().getPartner().getCategory().getTitle());
+                });
+
+            });
+
+
         });
     }
 

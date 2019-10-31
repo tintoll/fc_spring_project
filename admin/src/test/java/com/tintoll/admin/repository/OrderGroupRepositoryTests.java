@@ -17,7 +17,7 @@ public class OrderGroupRepositoryTests extends AdminUserRepositoryTests{
         orderGroup.setStatus("STATUS");
         orderGroup.setOrderType("WAITING");
 
-        orderGroup.setUserId(1L);
+        // orderGroup.setUserId(1L);
 
         OrderGroup newOrderGroup = orderGroupRepository.save(orderGroup);
 

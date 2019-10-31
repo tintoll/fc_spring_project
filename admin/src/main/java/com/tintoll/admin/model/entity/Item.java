@@ -3,6 +3,7 @@ package com.tintoll.admin.model.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString(exclude = {"partner","orderDetailList"})
 public class Item {
 
     @Id
@@ -43,7 +45,10 @@ public class Item {
 
     private String updatedBy;
 
+    @ManyToOne
+    private Partner partner;
 
-    private Long partnerId;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+    private List<OrderDetail> orderDetailList;
 }
 
