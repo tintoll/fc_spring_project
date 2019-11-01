@@ -22,13 +22,13 @@ public class UserRepositoryTest extends AdminApplicationTests {
     @Test
     public void create() {
         User user = new User();
-        user.setAccount("TestUser02");
+        user.setAccount("TestUser03");
         user.setPassword("password");
         user.setStatus("STATUS");
 
         user.setPhoneNumber("010-1111-1234");
-        user.setCreatedAt(LocalDateTime.now());
-        user.setCreatedBy("TestUser02");
+        //user.setCreatedAt(LocalDateTime.now());
+        //user.setCreatedBy("TestUser02");
 
         User newUser = userRepository.save(user);
 
