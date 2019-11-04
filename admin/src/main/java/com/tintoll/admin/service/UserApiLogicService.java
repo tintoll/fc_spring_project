@@ -2,6 +2,7 @@ package com.tintoll.admin.service;
 
 import com.tintoll.admin.ifs.CrudInterface;
 import com.tintoll.admin.model.entity.User;
+import com.tintoll.admin.model.enumClass.UserStatus;
 import com.tintoll.admin.model.network.Header;
 import com.tintoll.admin.model.network.request.UserApiRequest;
 import com.tintoll.admin.model.network.response.UserApiResponse;
@@ -27,7 +28,7 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
                         .account(userApiRequest.getAccount())
                         .password(userApiRequest.getPassword())
                         .phoneNumber(userApiRequest.getPhoneNumber())
-                        .status(userApiRequest.getStatus())
+                        .status(UserStatus.REGISTERED)
                         .registeredAt(LocalDateTime.now())
                         .build();
         User newUser = userRepository.save(user);
