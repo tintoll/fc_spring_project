@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserApiRespone {
+public class UserApiResponse {
 
     private Long id;
 

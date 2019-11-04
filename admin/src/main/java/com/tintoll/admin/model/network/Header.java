@@ -1,5 +1,6 @@
 package com.tintoll.admin.model.network;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 public class Header<T> {
 
     // api 통신시간
+    // @JsonProperty("transaction_time")
     private LocalDateTime transactionTime;
 
     // api 응답 코드
