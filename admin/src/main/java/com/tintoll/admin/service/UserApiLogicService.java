@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
-public class UserApiLogicService implements CrudInterface {
+public class UserApiLogicService implements CrudInterface<UserApiRequest, UserApiResponse> {
 
     @Autowired
     private UserRepository userRepository;
