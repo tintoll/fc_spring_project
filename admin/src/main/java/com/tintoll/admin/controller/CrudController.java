@@ -3,12 +3,17 @@ package com.tintoll.admin.controller;
 
 import com.tintoll.admin.ifs.CrudInterface;
 import com.tintoll.admin.model.network.Header;
+import com.tintoll.admin.service.BaseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 
-public abstract class CrudController<Req, Res> implements CrudInterface<Req, Res> {
+@Component
+public abstract class CrudController<Req, Res, Entity> implements CrudInterface<Req, Res> {
 
-    protected CrudInterface<Req, Res> baseService;
+    @Autowired
+    protected BaseService<Req, Res, Entity> baseService;
 
     @Override
     @PostMapping("")

@@ -1,23 +1,17 @@
 package com.tintoll.admin.service;
 
-import com.tintoll.admin.ifs.CrudInterface;
 import com.tintoll.admin.model.entity.Item;
 import com.tintoll.admin.model.network.Header;
 import com.tintoll.admin.model.network.request.ItemApiRequest;
 import com.tintoll.admin.model.network.response.ItemApiResponse;
-import com.tintoll.admin.repository.ItemRepository;
 import com.tintoll.admin.repository.PartnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
-public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemApiResponse> {
-
-    @Autowired
-    private ItemRepository itemRepository;
+public class ItemApiLogicService extends BaseService<ItemApiRequest,ItemApiResponse, Item> {
 
     @Autowired
     private PartnerRepository partnerRepository;
@@ -38,13 +32,13 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
                 .partner(partnerRepository.getOne(body.getPartnerId()))
                 .build();
 
-        Item newItem = itemRepository.save(item);
+        Item newItem = baseRepository.save(item);
         return response(newItem);
     }
 
     @Override
     public Header<ItemApiResponse> read(Long id) {
-        return itemRepository.findById(id)
+        return baseRepository.findById(id)
                 .map(item -> response(item))
                 .orElseGet(() -> Header.ERROR("아이템 정보 없음 "));
     }
@@ -53,7 +47,7 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
     public Header<ItemApiResponse> update(Header<ItemApiRequest> request) {
         ItemApiRequest body = request.getData();
 
-        return itemRepository.findById(body.getId())
+        return baseRepository.findById(body.getId())
                 .map(item -> {
                     item.setStatus(body.getStatus())
                             .setTitle(body.getTitle())
@@ -66,7 +60,7 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
                             .setRegisteredAt(body.getRegisteredAt())
                             .setUnregisteredAt(body.getUnregisteredAt());
 
-                    return itemRepository.save(item);
+                    return baseRepository.save(item);
 
                 }).map(modifyItem -> response(modifyItem))
                 .orElseGet(() -> Header.ERROR("아이템 정보 없음"));
@@ -75,9 +69,9 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
 
     @Override
     public Header delete(Long id) {
-        return itemRepository.findById(id)
+        return baseRepository.findById(id)
                 .map(item -> {
-                    itemRepository.delete(item);
+                    baseRepository.delete(item);
                     return Header.OK();
                 }).orElseGet(() -> Header.ERROR("아이템 정보 없음 "));
     }

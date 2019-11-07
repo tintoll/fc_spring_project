@@ -1,28 +1,24 @@
 package com.tintoll.admin.controller.api;
 
 import com.tintoll.admin.controller.CrudController;
-import com.tintoll.admin.ifs.CrudInterface;
-import com.tintoll.admin.model.network.Header;
+import com.tintoll.admin.model.entity.Item;
 import com.tintoll.admin.model.network.request.ItemApiRequest;
 import com.tintoll.admin.model.network.response.ItemApiResponse;
-import com.tintoll.admin.service.ItemApiLogicService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.PostConstruct;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/item")
-public class ItemApiController extends CrudController<ItemApiRequest, ItemApiResponse> {
+public class ItemApiController extends CrudController<ItemApiRequest, ItemApiResponse, Item> {
 
 
-    @Autowired
-    private ItemApiLogicService itemApiLogicService;
-
-    @PostConstruct
-    public void init() {
-        baseService = itemApiLogicService;
-    }
+//    @Autowired
+//    private ItemApiLogicService itemApiLogicService;
+//
+//    @PostConstruct
+//    public void init() {
+//        baseService = itemApiLogicService;
+//    }
 //
 //    @Override
 //    @PostMapping("")
