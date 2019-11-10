@@ -8,10 +8,14 @@ import com.tintoll.admin.model.network.request.UserApiRequest;
 import com.tintoll.admin.model.network.response.UserApiResponse;
 import com.tintoll.admin.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserApiLogicService implements CrudInterface<UserApiRequest, UserApiResponse> {
@@ -91,5 +95,13 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
                 .unregisteredAt(user.getUnregisteredAt())
                 .status(user.getStatus())
                 .build();
+    }
+
+    public Header<List<UserApiResponse>> search(Pageable pageable) {
+        Page<User> page = userRepository.findAll(pageable);
+        List<UserApiResponse> userApiResponseList = page.stream()
+                .map( user -> respone(user))
+                .collect(Collectors.toList());
+        return Header.OK(userApiResponseList);
     }
 }

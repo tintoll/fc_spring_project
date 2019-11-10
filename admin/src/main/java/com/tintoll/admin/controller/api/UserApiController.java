@@ -6,7 +6,12 @@ import com.tintoll.admin.model.network.request.UserApiRequest;
 import com.tintoll.admin.model.network.response.UserApiResponse;
 import com.tintoll.admin.service.UserApiLogicService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -15,6 +20,15 @@ public class UserApiController implements CrudInterface<UserApiRequest, UserApiR
 
     @Autowired
     private UserApiLogicService userApiLogicService;
+
+    @GetMapping("")
+    public Header<List<UserApiResponse>> search
+            (@PageableDefault(size = 15, sort = {"id"}, direction = Sort.Direction.ASC) Pageable pageable) {
+
+
+        return userApiLogicService.search(pageable);
+    }
+
 
     @Override
     @PostMapping("")

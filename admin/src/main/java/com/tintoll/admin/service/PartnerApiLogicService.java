@@ -58,7 +58,7 @@ public class PartnerApiLogicService extends BaseService<PartnerApiRequest, Partn
                            .setBusinessNumber(dto.getBusinessNumber())
                            .setCallCenter(dto.getCallCenter())
                            .setCeoName(dto.getCeoName());
-                    
+
                     baseRepository.save(partner);
                     return Header.OK(response(partner));
                 }).orElseGet( () -> Header.ERROR("파트너 정보 없음"));
