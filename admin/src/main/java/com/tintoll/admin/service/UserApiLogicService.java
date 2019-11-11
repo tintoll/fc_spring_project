@@ -4,6 +4,7 @@ import com.tintoll.admin.ifs.CrudInterface;
 import com.tintoll.admin.model.entity.User;
 import com.tintoll.admin.model.enumClass.UserStatus;
 import com.tintoll.admin.model.network.Header;
+import com.tintoll.admin.model.network.Pagination;
 import com.tintoll.admin.model.network.request.UserApiRequest;
 import com.tintoll.admin.model.network.response.UserApiResponse;
 import com.tintoll.admin.repository.UserRepository;
@@ -102,6 +103,14 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
         List<UserApiResponse> userApiResponseList = page.stream()
                 .map( user -> respone(user))
                 .collect(Collectors.toList());
-        return Header.OK(userApiResponseList);
+
+        Pagination pagination = Pagination.builder()
+                                    .currentPage(page.getNumber())
+                                    .currentElements(page.getNumberOfElements())
+                                    .totalPages(page.getTotalPages())
+                                    .totalElements(page.getTotalElements())
+                                    .build();
+
+        return Header.OK(userApiResponseList, pagination);
     }
 }

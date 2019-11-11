@@ -24,10 +24,10 @@ public class UserApiController implements CrudInterface<UserApiRequest, UserApiR
     @GetMapping("")
     public Header<List<UserApiResponse>> search
             (@PageableDefault(size = 15, sort = {"id"}, direction = Sort.Direction.ASC) Pageable pageable) {
-
-
         return userApiLogicService.search(pageable);
     }
+
+
 
 
     @Override
