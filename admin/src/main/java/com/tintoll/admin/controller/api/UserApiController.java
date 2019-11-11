@@ -4,6 +4,7 @@ import com.tintoll.admin.ifs.CrudInterface;
 import com.tintoll.admin.model.network.Header;
 import com.tintoll.admin.model.network.request.UserApiRequest;
 import com.tintoll.admin.model.network.response.UserApiResponse;
+import com.tintoll.admin.model.network.response.UserOrderInfoApiResponse;
 import com.tintoll.admin.service.UserApiLogicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,10 @@ public class UserApiController implements CrudInterface<UserApiRequest, UserApiR
         return userApiLogicService.search(pageable);
     }
 
+    @GetMapping("/{id}/orderInfo")
+    public Header<UserOrderInfoApiResponse> orderInfo(@PathVariable Long id) {
+        return userApiLogicService.orderInfo(id);
+    }
 
 
 

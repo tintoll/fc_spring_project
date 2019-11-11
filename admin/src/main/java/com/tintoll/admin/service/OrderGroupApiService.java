@@ -39,7 +39,7 @@ public class OrderGroupApiService implements CrudInterface<OrderGroupRequest, Or
 
         OrderGroup newOrderGroup = orderGroupRepository.save(orderGroup);
 
-        return response(newOrderGroup);
+        return  Header.OK(response(newOrderGroup));
     }
 
 
@@ -47,8 +47,8 @@ public class OrderGroupApiService implements CrudInterface<OrderGroupRequest, Or
     @Override
     public Header<OrderGroupResponse> read(Long id) {
         return orderGroupRepository.findById(id)
-                .map(orderGroup -> response(orderGroup))
-                .orElseGet(() -> Header.ERROR("주문내역 없음"));
+                .map(orderGroup -> Header.OK(response(orderGroup)))
+                .orElseGet(() ->  Header.ERROR("주문내역 없음"));
     }
 
     @Override
@@ -68,7 +68,7 @@ public class OrderGroupApiService implements CrudInterface<OrderGroupRequest, Or
                             .setArrivalDate(body.getArrivalDate())
                             .setUser(userRepository.getOne(body.getUserId()));
                     return orderGroupRepository.save(orderGroup);
-                }).map(newOrderGroup -> response(newOrderGroup))
+                }).map(newOrderGroup -> Header.OK(response(newOrderGroup)))
                 .orElseGet(() -> Header.ERROR("주문내역 없음"));
     }
 
@@ -82,7 +82,7 @@ public class OrderGroupApiService implements CrudInterface<OrderGroupRequest, Or
                 .orElseGet(() -> Header.ERROR("주문내역 없음"));
     }
 
-    private Header<OrderGroupResponse> response(OrderGroup orderGroup) {
+    public OrderGroupResponse response(OrderGroup orderGroup) {
 
         OrderGroupResponse orderGroupResponse
                 = OrderGroupResponse.builder()
@@ -99,6 +99,6 @@ public class OrderGroupApiService implements CrudInterface<OrderGroupRequest, Or
                     .userId(orderGroup.getUser().getId())
                     .build();
 
-        return Header.OK(orderGroupResponse);
+        return orderGroupResponse;
     }
 }
