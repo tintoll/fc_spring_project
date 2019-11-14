@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.time.LocalDate;
 
 @Entity
@@ -40,6 +41,9 @@ public class Person {
     // phoneNumber를 제외한고 toString을 만들어준다.
     @ToString.Exclude
     private String phoneNumber;
+
+    @OneToOne
+    private Block block;
 
 
 }
