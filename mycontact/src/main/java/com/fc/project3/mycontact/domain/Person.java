@@ -1,8 +1,10 @@
 package com.fc.project3.mycontact.domain;
 
+import com.fc.project3.mycontact.domain.dto.Birthday;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.time.LocalDate;
 
 @Entity
@@ -29,7 +31,9 @@ public class Person {
 
     private String bloodType;
 
-    private LocalDate birthDay;
+    @Embedded
+    @Valid
+    private Birthday birthDay;
 
     private String address;
 

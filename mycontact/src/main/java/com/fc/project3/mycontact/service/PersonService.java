@@ -19,4 +19,8 @@ public class PersonService {
         //return people.stream().filter(person -> person.getBlock() == null).collect(Collectors.toList());
         return personRepository.findByBlockIsNull();
     }
+
+    public Person getPerson(Long id) {
+        return personRepository.findById(id).orElse(null);
+    }
 }
