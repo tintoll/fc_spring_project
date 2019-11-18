@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PersonService {
@@ -16,7 +15,8 @@ public class PersonService {
 
 
     public List<Person> getPersonExcludeBlock() {
-        List<Person> people = personRepository.findAll();
-        return people.stream().filter(person -> person.getBlock() == null).collect(Collectors.toList());
+        //List<Person> people = personRepository.findAll();
+        //return people.stream().filter(person -> person.getBlock() == null).collect(Collectors.toList());
+        return personRepository.findByBlockIsNull();
     }
 }
