@@ -1,5 +1,6 @@
 package com.fc.project3.mycontact.domain.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -28,5 +29,8 @@ public class Birthday {
         this.yearOfBirthday = birthday.getYear();
         this.monthOfBirthday = birthday.getMonthValue();
         this.dayOfBirthday = birthday.getDayOfMonth();
+    }
+    public static Birthday of(LocalDate birthday) {
+        return new Birthday(birthday);
     }
 }
