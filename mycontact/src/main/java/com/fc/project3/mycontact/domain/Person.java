@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -29,12 +30,7 @@ public class Person {
     @Column(nullable = false)
     private String name;
 
-    @NonNull
-    private int age;
-
     private String hobby;
-
-    private String bloodType;
 
     @Embedded
     @Valid
@@ -48,8 +44,6 @@ public class Person {
     @ToString.Exclude
     private String phoneNumber;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    private Block block;
 
     @ColumnDefault("0")
     private boolean deleted;
@@ -74,6 +68,18 @@ public class Person {
         if (personDto.getBirthday() != null) {
             this.setBirthDay(Birthday.of(personDto.getBirthday()));
         }
+    }
+
+    public Integer getAge() {
+        if (this.birthDay != null) {
+            return LocalDate.now().getYear() - this.birthDay.getYearOfBirthday() + 1;
+        } else {
+            return null;
+        }
+    }
+
+    public boolean isBirthdayToday() {
+        return LocalDate.now().equals(LocalDate.of(this.birthDay.getYearOfBirthday(), this.birthDay.getMonthOfBirthday(), this.birthDay.getDayOfBirthday()));
     }
 
 }
