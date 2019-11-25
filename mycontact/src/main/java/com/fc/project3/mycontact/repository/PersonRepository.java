@@ -11,18 +11,11 @@ import java.util.List;
 public interface PersonRepository extends JpaRepository<Person, Long> {
 
 
+    List<Person> findByName(String name);
 
+    @Query(value = "select person from Person person where person.birthday.monthOfBirthday = :monthOfBirthday")
+    List<Person> findByMonthOfBirthday(@Param("monthOfBirthday") int monthOfBirthday);
 
-    @Query("select person from Person person where person.birthDay.monthOfBirthday = ?1")
-    List<Person> findByBirthDay(int month);
-
-    @Query("select person from Person person where person.birthDay.monthOfBirthday = :month")
-    List<Person> findByBirthDayParam(@Param("month") int month);
-
-    @Query(value = "select * from person where month_of_birthday = :month", nativeQuery = true)
-    List<Person> findByBirthDayNative(@Param("month") int month);
-
-
-    @Query(value = "select * from person where deleted = true", nativeQuery = true)
+    @Query(value = "select * from Person person where person.deleted = true", nativeQuery = true)
     List<Person> findPeopleDeleted();
 }

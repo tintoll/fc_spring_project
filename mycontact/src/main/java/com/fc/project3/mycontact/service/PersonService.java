@@ -2,8 +2,12 @@ package com.fc.project3.mycontact.service;
 
 import com.fc.project3.mycontact.domain.Person;
 import com.fc.project3.mycontact.domain.dto.PersonDto;
+import com.fc.project3.mycontact.exception.PersonNotFoundException;
+import com.fc.project3.mycontact.exception.RenameIsNotPermittedException;
 import com.fc.project3.mycontact.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +19,21 @@ public class PersonService {
     @Autowired
     private PersonRepository personRepository;
 
+    public Page<Person> getAll(Pageable pageable) {
+        return personRepository.findAll(pageable);
+    }
 
+    public List<Person> getPeopleByName(String name) {
+        return personRepository.findByName(name);
+    }
+
+    @Transactional(readOnly = true)
     public Person getPerson(Long id) {
         return personRepository.findById(id).orElse(null);
     }
 
     @Transactional
-    public void create(PersonDto personDto) {
+    public void put(PersonDto personDto) {
         Person person = new Person();
         person.set(personDto);
         person.setName(personDto.getName());
@@ -31,10 +43,10 @@ public class PersonService {
 
     @Transactional
     public void modify(Long id, PersonDto personDto) {
-        Person person = personRepository.findById(id).orElseThrow( () -> new RuntimeException("아이디가 없습니다."));
+        Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
 
         if (!person.getName().equals(personDto.getName())) {
-            throw new RuntimeException("이름이 동일하지 않습니다.");
+            throw new RenameIsNotPermittedException();
         }
 
         person.set(personDto);
@@ -43,8 +55,9 @@ public class PersonService {
     }
 
     @Transactional
-    public void updateName(Long id, String name) {
-        Person person = personRepository.findById(id).orElseThrow( () -> new RuntimeException("아이디가 없습니다."));
+    public void modify(Long id, String name) {
+        Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
+
         person.setName(name);
 
         personRepository.save(person);
@@ -52,7 +65,7 @@ public class PersonService {
 
     @Transactional
     public void delete(Long id) {
-        Person person = personRepository.findById(id).orElseThrow( () -> new RuntimeException("아이디가 없습니다."));
+        Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
 
         person.setDeleted(true);
 
